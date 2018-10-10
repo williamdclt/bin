@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+GIT_FOLDER=$(git rev-parse --show-toplevel)/.git
+PATCH_STACK=$GIT_FOLDER/PATCH_STACK
+
+[ -z "$1" ] && echo "Usage: git patch <path_to_patch>" && exit 1
+
+patchName=$(echo "$(cd "$(dirname "$1")"; pwd)/$(basename "$1")")
+git apply "$patchName"
+echo "$patchName" >> $PATCH_STACK
+

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+devices=$(ls ~/.android/avd/*.ini | sed 's/.ini//' | sed 's#.*/##')
+select device in $devices; do
+    $ANDROID_HOME/tools/emulator -avd $device
+done

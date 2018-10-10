@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+GIT_FOLDER=$(git rev-parse --show-toplevel)/.git
+PATCH_STACK=$GIT_FOLDER/PATCH_STACK
+
+patchName=$(tail -n1 $PATCH_STACK)
+git apply -R $patchName
+sed -i "" -e "$d" $PATCH_STACK
+echo "Unpatched $patchName"
+

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+
+[ -z $1 ] && git commit --amend --no-edit && exit 0
+commit=$(git rev-parse $1)
+
+git commit --fixup $commit
+# non-interactive rebase
+GIT_SEQUENCE_EDITOR=true git rebase -i --autostash --autosquash $commit^

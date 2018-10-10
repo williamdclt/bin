@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo -n $( \
+    git log --color --pretty=format:"%C(yellow)%h %Creset%s%Cblue [%cn]%Cred%d" --decorate | \
+    fzf --ansi --multi \
+        --preview 'git show --color {+1}' \
+        --preview-window 'right:50%:hidden' \
+) | awk '{printf $1}' | pbcopy
+
