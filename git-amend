@@ -3,7 +3,21 @@
 set -e
 
 [ -z $1 ] && git commit --amend --no-edit && exit 0
-commit=$(git rev-parse $1)
+
+while getopts "i" OPT; do
+    case "$OPT" in
+        i)
+            interactive="true"
+            shift
+            ;;
+    esac
+done
+
+if [ -z "$interactive" ]; then
+    commit=$(git rev-parse $1)
+else
+    commit=$(git fzf)
+fi
 
 git commit --fixup $commit
 # non-interactive rebase
