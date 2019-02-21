@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+git log --color --pretty=format:"%C(yellow)%h %Creset%s%Cblue [%cn]%Cred%d" --decorate $@
+
+

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+iterations=10
+
+while :; do
+    case $1 in
+        -n)
+            iterations=$2
+            shift
+            ;;
+        -?*)
+            printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
+            ;;
+        *)               # Default case: No more options, so break out of the loop.
+            break
+    esac
+
+    shift
+done
+
+cmd="$@"
+
+mkdir -p /tmp/avgtime
+i=0
+while [ $i -lt $iterations ]; do
+    gtime -f "%e" -o /tmp/avgtime/time_$i $cmd
+
+    i=$[$i+1]
+done
+
+echo
+echo "Mean of $iterations executions of \`$cmd\`:"
+echo "$(cat /tmp/avgtime/time_* | awk '{ total += $1 } END { print total/NR }') seconds"
+rm -r /tmp/avgtime
+
+

@@ -3,7 +3,7 @@
 set -e
 
 commit=$( \
-    git log --color --pretty=format:"%C(yellow)%h %Creset%s%Cblue [%cn]%Cred%d" --decorate | \
+    git list-commits $@ | \
     fzf --ansi --multi \
         --preview 'git show --color {+1}' \
         --preview-window 'right:50%:hidden' \

@@ -9,7 +9,11 @@ cd $HOW_DIR
 start() {
     query=$1
 
-    fzf --reverse --preview='bat --color "always" {}' --preview-window=right:70%:wrap --query="$query"
+    fzf --reverse \
+        --preview='bat --color "always" {}' \
+        --preview-window=right:70%:wrap \
+        --query="$query" \
+        --bind='ctrl-y:execute(cat {} | yank)+abort'
 }
 
 new() {
@@ -18,6 +22,12 @@ new() {
     mkdir -p "${file%/*}"
     $EDITOR $file.md
     [ -e $file.md ] && git add $file.md && git commit -m "Add $file.md"
+}
+
+edit() {
+    file=$(start $@)
+    $EDITOR $file
+    git diff $file && git add $file && git commit -m "Edit $file"
 }
 
 remove() {
@@ -31,7 +41,7 @@ list() {
     $EDITOR "$file"
 }
 
-if [[ "$1" =~ ^(new|remove)$ ]]; then
+if [[ "$1" =~ ^(new|edit|remove)$ ]]; then
     command=$1
     shift
     $command $@
