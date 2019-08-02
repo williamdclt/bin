@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-set -e
+subcommand=${1:-status}
 
-commit=$( \
-    git list-commits $@ | \
-    fzf --ansi --multi \
-        --preview 'git show --color {+1}' \
-        --preview-window 'right:50%:hidden' \
-)
+if [[ "$subcommand" =~ ^(co|cmm|cm)$ ]]; then
+    subcommand=commit
+elif [[ "$subcommand" =~ ^(br)$ ]]; then
+    subcommand=branch
+elif [[ "$subcommand" =~ ^(st|stat)$ ]]; then
+    subcommand=status
+fi
 
-echo -n "$commit" | awk '{printf $1}'
-
+git fzf-$subcommand

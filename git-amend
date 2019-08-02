@@ -16,7 +16,7 @@ done
 if [ -z "$interactive" ]; then
     commit=$(git rev-parse ${1:-HEAD})
 else
-    commit=$(git fzf)
+    commit=$(git fzf-commit)
 fi
 
 git commit --fixup $commit
