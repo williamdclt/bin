@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+fzf \
+  --prompt "[insert] " \
+  --color "prompt:136" \
+  --bind "esc:execute(fzf-vim-normal)" \
+  "$@"

@@ -13,7 +13,7 @@ start() {
         --preview='bat --color "always" {}' \
         --preview-window=right:70%:wrap \
         --query="$query" \
-        --bind='ctrl-y:execute(cat {} | yank)+abort'
+        --bind='ctrl-y:execute(cat {} | yank -l)+abort'
 }
 
 new() {

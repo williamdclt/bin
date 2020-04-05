@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+_fzf() {
+    fzf-vim \
+        --ansi --multi \
+        --preview 'git show --color {+1}' \
+        --preview-window 'right:50%:hidden'
+}
+
+git list-commits "$@" | _fzf | awk '{printf $1}'

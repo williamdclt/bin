@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 subcommand=${1:-status}
 
 if [[ "$subcommand" =~ ^(co|cmm|cm)$ ]]; then

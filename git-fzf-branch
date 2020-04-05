@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+_clean () {
+    sed 's/^ *//'
+}
+
+_fzf() {
+    fzf --ansi \
+        --multi \
+        --preview 'git diff --color {+2}' \
+        --preview-window 'right:50%:hidden'
+}
+
+_git_cmd () {
+    git branch
+}
+
+
+_git_cmd | _fzf | _clean
+

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+git fzf-status | xargs rm -r
+
+git status -sb
+

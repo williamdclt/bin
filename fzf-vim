@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+fzf-vim-normal "$@"
+
+  # --bind "j:down" \
+  # --bind "J:down+down+down+down+down" \
+  # --bind "k:up" \
+  # --bind "K:up+up+up+up+up" \
+  # --bind "g:top" \
+  # --bind "G:down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down" \

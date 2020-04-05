@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+fzf \
+  --prompt "[normal] " \
+  --color "prompt:033" \
+  --bind "j:down" \
+  --bind "J:down+down+down+down+down" \
+  --bind "k:up" \
+  --bind "K:up+up+up+up+up" \
+  --bind "g:top" \
+  --bind "G:down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down+down" \
+  --bind "i:execute(fzf-vim-insert)+abort" \
+  "$@"

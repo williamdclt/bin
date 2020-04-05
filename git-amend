@@ -2,7 +2,9 @@
 
 set -e
 
-[ -z $1 ] && git commit --amend --no-edit && exit 0
+[ -z "$1" ] && git commit --amend --no-edit && exit 0
+
+usage() { echo "Usage: git amend [-i]" 1>&2; exit 1; }
 
 while getopts "i" OPT; do
     case "$OPT" in
@@ -10,15 +12,18 @@ while getopts "i" OPT; do
             interactive="true"
             shift
             ;;
+        *)
+            usage
+            ;;
     esac
 done
 
-if [ -z "$interactive" ]; then
-    commit=$(git rev-parse ${1:-HEAD})
-else
+if [ -n "$interactive" ]; then
     commit=$(git fzf-commit)
+else
+    commit=$(git rev-parse "${1:-HEAD}")
 fi
 
-git commit --fixup $commit
+git commit --fixup "$commit"
 # non-interactive rebase
-GIT_SEQUENCE_EDITOR=true git rebase -i --autostash --autosquash $commit^
+GIT_SEQUENCE_EDITOR=true git rebase -i --autostash --autosquash "$commit"^
