@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+HOWDIR="$HOME/.how"
+
+[ ! -d "$HOWDIR" ] && mkdir "$HOWDIR"
+
+cd "$HOWDIR"
+
+fzf \
+    --bind 'ctrl-n:execute(vim)+abort' \
+    --bind 'enter:execute(cat {})+abort'
