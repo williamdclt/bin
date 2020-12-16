@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+default="scripts"
+key=${1:-$default}
+cat package.json | jq ".$key"
