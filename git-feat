@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+git diff-index --quiet HEAD -- || (echo "Uncommitted changes" && exit 1)
+
+git checkout staging
+git pull
+git checkout -b $@
