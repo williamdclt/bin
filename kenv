@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+environment=$1
+
+if [ -z "$environment" ]; then
+    echo "Usage: kenv <environment>"
+    exit 1
+fi
+
+if [ "$environment" = "prod" ]; then
+    environment=production
+fi
+
+export AWS_PROFILE=birdie-$environment
+export KUBECONFIG="$HOME/birdie/infrastructure/terraform/environments/$environment/kubeconfig"
+
