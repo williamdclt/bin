@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 
-set -e
+args="$@"
+cmd="fd --color=always"
 
-RG_PREFIX="rg --column --no-heading --color=always --smart-case --context 5 "
-FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'"
-
-file=$(fzf \
-    --bind "change:reload:$RG_PREFIX -l {q} || true" \
-    --ansi --phony \
-    --preview "$RG_PREFIX -e {q} {}")
-
-vim "$file"
+$cmd $args | fzf --ansi --bind "change:reload:$cmd {q} $args"
 
