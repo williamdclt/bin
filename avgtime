@@ -13,7 +13,7 @@ while :; do
         -?*)
             printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
             ;;
-        *)               # Default case: No more options, so break out of the loop.
+        *) # Default case: No more options, so break out of the loop.
             break
     esac
 
@@ -34,5 +34,4 @@ echo
 echo "Mean of $iterations executions of \`$cmd\`:"
 echo "$(cat /tmp/avgtime/time_* | awk '{ total += $1 } END { print total/NR }') seconds"
 rm -r /tmp/avgtime
-
 
