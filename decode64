@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+base64 --decode <(echo "$1")
+echo
