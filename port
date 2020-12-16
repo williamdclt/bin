@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+port=$1
+
+lsof -iTCP -P -sTCP:LISTEN | fzf --no-preview \
+    --query ":$port" \
+    --bind="ctrl-o:execute(echo {} | awk '{ print \$2 }' | xargs kill -9)+abort"
