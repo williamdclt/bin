@@ -1,14 +1,20 @@
 #!/usr/bin/env zsh
 
+set -eo pipefail
+
 fbr () {
 	local branches branch
 	local query=$1
-	local opts="--cycle +m -e --color=spinner:233,info:233 --select-1 --exit-0 --preview-window right:50 --height 50%"
+	local opts="--cycle +m -e --color=spinner:233,info:233 --select-1 --exit-0 --preview-window right:50% --height 50%"
+
 	if ! [[ -z "${query// }" ]]
 	then
 		opts="$=opts -q ${query}"
 	fi
-    branches=$(git branch)  && branch=$(echo "$branches" | fzf "$=opts" --preview 'git --no-pager log --oneline --decorate --graph -n10 {1}')  && git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+
+    branches=$(git for-each-ref --sort=-committerdate --count=100 --format='%(refname:short)' refs/heads/) 
+    branch=$(echo "$branches" | fzf "$=opts" --preview 'git ll {} --color=always')
+    git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
 
-fbr !@
+fbr 
