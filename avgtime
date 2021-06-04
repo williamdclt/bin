@@ -25,7 +25,7 @@ cmd="$@"
 mkdir -p /tmp/avgtime
 i=0
 while [ $i -lt $iterations ]; do
-    gtime -f "%e" -o /tmp/avgtime/time_$i $cmd
+    gtime -f "%e" -o /tmp/avgtime/time_$i $cmd || true
 
     i=$[$i+1]
 done
