@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+    msg="All done"
+else
+    msg="$@"
+fi
+
+osascript -e "display notification \"$msg\" with title \"Done\" sound name \"Submarine\""
