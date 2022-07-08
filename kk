@@ -7,6 +7,7 @@ source $HOME/bin/colors || true
 [ -z "$AWS_PROFILE" ] && echo "${RED}No environment set${NC}" && exit 1
 
 env=$(echo $AWS_PROFILE | sed 's/birdie-//')
+cmd="${@:-sh}"
 
 prompt="$env> "
 fzf_cmd="fzf --preview-window hidden --height 50 --prompt $prompt"
@@ -27,8 +28,27 @@ pick_pod() {
         | ~/bin/col 1
 }
 
+pick_container() {
+    namespace="$1"
+    pod="$2"
+
+    containers=$(kubectl get pods "$pod" \
+        -n "$namespace" \
+        -o jsonpath='{range .spec.containers[*]}{.name}{"\n"}')
+
+    echo "$containers" | grep -v istio-proxy
+}
+
 namespace=$(pick_namespace)
 pod=$(pick_pod "$namespace")
+container=$(pick_container "$namespace" "$pod")
 
-kubectl exec -it "$pod" -n "$namespace" -- sh
+echo "${YELLOW}[$env] $pod${NC}"
+
+if [[ "$cmd" == logs* ]]; then
+    kubectl $cmd "$pod" -n "$namespace"
+else
+    # No quoting cmd on purpose, so that arguments are passed as such
+    kubectl exec -it "$pod" -n "$namespace" -c "$container" -- $cmd
+fi
 
