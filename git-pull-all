@@ -1,0 +1,11 @@
+set -eo pipefail
+
+for d in *; do
+  (
+    [ -d "$d" ] || exit 0;
+    cd $d;
+    [ -d ".git" ] || exit 0;
+    echo "git pull $d"
+    git pull --autostash;
+  )&
+done
