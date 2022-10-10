@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+src="$HOME/Downloads/startpage/startpage.html"
+dest="$HOME/dev/startpage/startpage.html"
+
+cp "$src" "$dest.bak"
+cp "$src" "$dest"

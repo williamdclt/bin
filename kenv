@@ -11,6 +11,6 @@ if [ "$environment" = "prod" ]; then
     environment=production
 fi
 
-export AWS_PROFILE=birdie-$environment
+export AWS_PROFILE=$environment-admin
 export KUBECONFIG="$HOME/birdie/infrastructure/terraform/environments/$environment/kubeconfig"
 

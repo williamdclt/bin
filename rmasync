@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+set -e
+
+tmpfolder=$(mktemp -d)
+mv "$1" "$tmpfolder"
+rm -r "$tmpfolder" &

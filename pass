@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+input=$(lpass ls --color=always)
+
+echo -e "$input" | fzf --ansi --query "$1" \
+    --preview "echo {} | sed 's/.*id: \\(.*\\)]/\\1/' | xargs lpass show --color=always" \
+    | sed 's/.*id: \(.*\)]/\1/' \
+    | xargs lpass show --password \
+    | trim \
+    | pbcopy

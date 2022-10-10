@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+cd "$(npm prefix)" # go to folder containing the closest package.json
+
+if (cat package.json | grep -q please-use-pnpm); then
+    pnpm "$@"
+else
+    if (cat package.json | grep -q please-use-yarn); then
+        yarn "$@"
+    else
+        npm "$@"
+    fi
+fi
+
+
