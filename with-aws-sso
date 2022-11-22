@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+if ! aws sts get-caller-identity 2>&1 >/dev/null; then
+    . ~/bin/with-screen
+    aws sso login
+    exit_screen
+fi
+

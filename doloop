@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
-while "$@" || true; do
+set -eo pipefail
+
+. ~/bin/with-screen
+
+while true; do
+    res="$(script -q /dev/null $@)"
+    clear
     date
+    echo "$res"
+    final_output="$res"
     sleep 1
 done;
+

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+tput smcup
+
+# Can write to final_output from the calling script,
+# this will be printed on the main script when the
+# alt screen is exited
+final_output=
+exited=
+
+# Can use exit_screen from the calling script
+# to exit the alt screen without exiting the process,
+# eg if the screen is needed just for a part of the
+# script
+function exit_screen() {
+    tput rmcup
+    [ -n "$final_output" ] && echo "$final_output"
+    exited=1
+}
+
+function on_exit_trap {
+    [ -n exited ] && return
+    tput rmcup
+}
+
+trap on_exit_trap EXIT
+

@@ -12,6 +12,7 @@ cmd="${@:-sh}"
 prompt="$env> "
 fzf_cmd="fzf --preview-window hidden --height 50 --prompt $prompt"
 
+
 pick_namespace() {
     kubectl get namespaces \
         -o custom-columns=NAME:.metadata.name \
@@ -24,7 +25,7 @@ pick_pod() {
     kubectl get pods -n "$namespace" \
         | tail -n +2 \
         | $fzf_cmd -n 1 \
-            --preview "kubectl describe pod \$(echo {} | ~/bin/col 1) -n $namespace" \
+            --preview "kubectl logs -f \$(echo {} | ~/bin/col 1) -n $namespace" \
         | ~/bin/col 1
 }
 
@@ -38,6 +39,8 @@ pick_container() {
 
     echo "$containers" | grep -v istio-proxy
 }
+
+. ~/bin/with-aws-sso
 
 namespace=$(pick_namespace)
 pod=$(pick_pod "$namespace")
