@@ -40,6 +40,11 @@ pick_container() {
     echo "$containers" | grep -v istio-proxy
 }
 
+announce() {
+    echo "${BLUE}$@${NC}"
+    "$@"
+}
+
 . ~/bin/with-aws-sso
 
 namespace=$(pick_namespace)
@@ -49,9 +54,13 @@ container=$(pick_container "$namespace" "$pod")
 echo "${YELLOW}[$env] $pod${NC}"
 
 if [[ "$cmd" == logs* ]]; then
-    kubectl $cmd "$pod" -n "$namespace"
+    announce kubectl $cmd "$pod" -n "$namespace"
+elif [[ "$cmd" == port-forward* ]]; then
+    shift
+    port="$@"
+    announce kubectl port-forward "$pod" "$port" -n "$namespace"
 else
     # No quoting cmd on purpose, so that arguments are passed as such
-    kubectl exec -it "$pod" -n "$namespace" -c "$container" -- $cmd
+    announce kubectl exec -it "$pod" -n "$namespace" -c "$container" -- $cmd
 fi
 

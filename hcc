@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+HISTFILE=~/.zsh_history
+set -eo pipefail
+set -o history
+
+fc -ln 1 | tac | fzf --no-preview | pbcopy
