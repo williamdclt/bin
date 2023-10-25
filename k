@@ -13,7 +13,10 @@ else
 fi
 
 if [[ -z "$@" ]]; then
-    echo "${BLUE}Nothing to do; exit${NC}"
+    echo "pass"
+elif [ "$1" = "shell" -o "$1" = "sh" ]; then
+    shift
+    k-shell "$@"
 else
     kubectl "$@"
 fi

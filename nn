@@ -4,10 +4,10 @@ set -eo pipefail
 
 cd "$(npm prefix)" # go to folder containing the closest package.json
 
-if (cat package.json | grep -q please-use-pnpm); then
+if [ -f pnpm-lock.yaml ]; then
     pnpm "$@"
 else
-    if (cat package.json | grep -q please-use-yarn); then
+    if [ -f yarn.lock ]; then
         yarn "$@"
     else
         npm "$@"

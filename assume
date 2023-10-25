@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+    environment=$(aws configure list-profiles | fzf --height 40% --no-preview || true)
+else
+    environment=$1
+fi
+
+if [ "$environment" = "prod" -o "$environment" = "production" ]; then
+    environment=ldn-production
+fi
+
+if [ "$environment" = "staging" ]; then
+    environment=ldn-staging
+fi
+
+if [ "$environment" = "ff-prod" ]; then
+    environment=ff-production
+fi
+
+if [[ $environment == *production ]]; then
+    kubeconf=production
+else
+    kubeconf=staging
+fi
+
+export AWS_PROFILE="$environment"
+export KUBECONFIG="$HOME/birdie/infrastructure/terraform/environments/$kubeconf/kubeconfig"
+kubectl config use-context "$environment"
+
