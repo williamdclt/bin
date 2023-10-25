@@ -18,13 +18,12 @@ dbc_cleanup() {
     dbcpid=
   fi
 }
-trap dbc_cleanup EXIT
+trap dbc_cleanup EXIT INT ABRT KILL TERM HUP
 
 # pick a pod, print the env variables
-envvars=$(kk env)
+envvars=$(k shell env)
 # keep only the env vars (line contains "=") and pick one, prefilled "DBURL"
 dburl=$(echo "$envvars" | grep "=" | fzf --no-preview --query DBURL)
-echo "$dburl"
 # Remove non-printable character, as we're getting some weirdness
 dburl=$(echo "$dburl" | sed 's/[^[:print:]]//g')
 # Some other cleanup
@@ -34,7 +33,6 @@ username=$(node -e "console.log(new URL('$dburl').username)")
 password=$(node -e "console.log(new URL('$dburl').password)")
 dbpath=$(node -e "console.log(new URL('$dburl').pathname)")
 dburl="postgresql://$username:$password@localhost:$localport$dbpath"
-echo "$dburl"
 
 if lsof -iTCP -P -sTCP:LISTEN | grep "$localport"; then
     existingTunnelPid=$(lsof -iTCP -P -sTCP:LISTEN | grep "$localport" | ~/bin/col 2)
@@ -47,7 +45,7 @@ dbc connect -H "$hostname" -l "$localport" &
 dbcpid=$!
 
 # Wait for dbc to start
-while ! psql "$dburl" -c "SELECT 1" 2>&1 > /dev/null; do
+while ! psql "$dburl" -c "SELECT 1" > /dev/null 2>&1 ; do
     echo -n '.'
     sleep 1
 done
